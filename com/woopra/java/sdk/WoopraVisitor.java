@@ -20,25 +20,9 @@ public class WoopraVisitor {
 			this.cookieValue = value;
 		}
 	}
-	
-	public String getIpAddress() {
-		return ipAddress;
-	}
 
 	public void setIpAddress(String ipAddress) {
 		this.ipAddress = ipAddress;
-	}
-
-	public String getCookieValue() {
-		return cookieValue;
-	}
-
-	public void setCookieValue(String cookieValue) {
-		this.cookieValue = cookieValue;
-	}
-
-	public String getUserAgent() {
-		return userAgent;
 	}
 
 	public void setUserAgent(String userAgent) {
