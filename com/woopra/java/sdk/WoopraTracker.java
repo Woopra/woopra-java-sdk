@@ -77,14 +77,6 @@ public class WoopraTracker {
 			this.woopraHttpRequest(null, visitor);
 		}
 	}
-	
-	/**
-	 * Get the value of the idle timeout (time in milliseconds after which the user is considered offline)
-	 * @return idle timeout
-	 */
-	public int getIdle_timeout() {
-		return idleTimeout;
-	}
 
 	/**
 	 * Set the value of the idle timeout (time in milliseconds after which the user is considered offline)
