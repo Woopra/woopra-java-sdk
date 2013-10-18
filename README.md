@@ -32,7 +32,8 @@ visitor = new WoopraVisitor(WoopraVisitor.EMAIL, "johndoe@mybusiness.com");
 // a WoopraVisitor identified with a unique ID:
 visitor = new WoopraVisitor(WoopraVisitor.UNIQUE_ID, "MYUNIQUEID");
 // In both cases, you can then add visitor properties:
-visitor.setProperty("email", "johndoe@mybusiness.com"); //no need to do that if you identified the user with his email
+visitor.setProperty("email", "johndoe@mybusiness.com");
+//no need to do that if you already instanciated the user with his email
 visitor.setProperty("name", "John Doe");
 visitor.setProperty("company": "My Business");
 ```
