@@ -17,7 +17,7 @@ event = new WoopraEvent("play", new Object[][] {
    {"artist", "Dave Brubeck"},
    {"song", "Take Five"},
    {"genre", "Jazz"},
-}, true);
+});
 // or, if you prefer:
 event = new WoopraEvent();
 event.setName("play");
@@ -25,7 +25,7 @@ event.setProperty("artist", "Dave Brubeck");
 event.setProperty("song", "Take Five");
 event.setProperty("genre", "Jazz");
 ```
-... and an instance of WoopraVisitor (the user who triggered the event). You can choose to identify the visitor with his email, or with a UNIQUE_ID of your choice (in this case, make sure to re-use the same ID for a given visitor accross different visits).
+... and an instance of WoopraVisitor (the user who triggered the event). You can choose to identify the visitor with his EMAIL, or with a UNIQUE_ID of your choice (in this case, make sure to re-use the same ID for a given visitor accross different visits).
 ``` java
 // a WoopraVisitor identified with his email:
 visitor = new WoopraVisitor(WoopraVisitor.EMAIL, "johndoe@mybusiness.com");
@@ -40,4 +40,8 @@ visitor.setProperty("company": "My Business");
 And you're ready to start tracking events:
 ``` java
 woopra.track(visitor, event);
+```
+Or just push the user information (without event tracking) by doing:
+``` java
+woopra.push(visitor);
 ```
