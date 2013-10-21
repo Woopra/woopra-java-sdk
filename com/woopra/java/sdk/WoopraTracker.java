@@ -105,7 +105,7 @@ public class WoopraTracker {
 			}
 			String url;
 			if ( event == null ) {
-				url = baseUrl.concat("identify/").concat(configParams).concat(userParams).concat("&ce__w_app=").concat(WoopraTracker.SDK_ID);
+				url = baseUrl.concat("identify/").concat(configParams).concat(userParams).concat("&app=").concat(WoopraTracker.SDK_ID);
 			} else {
 				String eventParams = "";
 				eventParams = eventParams.concat("&ce_name=").concat(URLEncoder.encode(event.name, "UTF-8"));
@@ -116,7 +116,7 @@ public class WoopraTracker {
 					String value = event.properties.get(key).toString();
 					eventParams = eventParams.concat("&ce_").concat(URLEncoder.encode(key, "UTF-8")).concat("=").concat(URLEncoder.encode(value, "UTF-8"));
 				}
-				url = baseUrl.concat("ce/").concat(configParams).concat(userParams).concat(eventParams).concat("&ce__w_app=").concat(WoopraTracker.SDK_ID);
+				url = baseUrl.concat("ce/").concat(configParams).concat(userParams).concat(eventParams).concat("&app=").concat(WoopraTracker.SDK_ID);
 			}
 			AsyncClient.getInstance().send(new URL(url), visitor.getUserAgent().equals("") ? null : new String[] {"User-Agent: ".concat(visitor.getUserAgent())});
 		} catch (JSONException e) {
