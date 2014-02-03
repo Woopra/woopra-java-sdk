@@ -18,9 +18,10 @@ event = new WoopraEvent("play", new Object[][] {
    {"song", "Take Five"},
    {"genre", "Jazz"},
 });
-// or, if you prefer:
-event = new WoopraEvent();
-event.setName("play");
+
+// or
+
+event = new WoopraEvent("play");
 event.setProperty("artist", "Dave Brubeck");
 event.setProperty("song", "Take Five");
 event.setProperty("genre", "Jazz");
