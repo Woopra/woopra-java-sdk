@@ -7,7 +7,7 @@ public class WoopraVisitor {
 	public static String EMAIL = "email";
 	public static String UNIQUE_ID = "uniqueId";
 	
-	protected HashMap<String, Object> properties = new HashMap<String, Object>();
+	protected HashMap<String, Object> properties = new HashMap<>();
 	private String ipAddress = "";
 	private String cookieValue = "";
 	private String userAgent = "";
