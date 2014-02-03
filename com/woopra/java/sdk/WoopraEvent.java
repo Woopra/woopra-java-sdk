@@ -43,16 +43,6 @@ public class WoopraEvent {
 	}
 	
 	/**
-	 * Set the event's name.
-	 * @param eventName
-	 * @return WoopraEvent
-	 */
-	public WoopraEvent setName(String eventName) {
-		this.name = eventName;
-		return this;
-	}
-	
-	/**
 	 * Set one event property
 	 * @param key
 	 * @param value
