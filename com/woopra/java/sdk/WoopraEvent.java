@@ -22,11 +22,6 @@ public class WoopraEvent {
 	
 	/**
 	 * Public Constructor
-	 */
-	public WoopraEvent() {}
-	
-	/**
-	 * Public Constructor
 	 * @param eventName
 	 */
 	public WoopraEvent(String eventName) {
