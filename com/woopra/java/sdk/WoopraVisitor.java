@@ -36,4 +36,16 @@ public class WoopraVisitor {
 	public String toString() {
 		return this.properties.toString();
 	}
+        
+        public String getCookieValue() {
+            return this.cookieValue;
+        }
+        
+        public String getIpAddress() {
+            return this.ipAddress;
+        }
+        
+        public String getUserAgent() {
+            return this.userAgent;
+        }
 }
