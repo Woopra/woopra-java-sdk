@@ -7,6 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Base64;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -30,6 +31,12 @@ public class WoopraTracker {
      */
     private final String domain;
     private int idleTimeout;
+
+    /**
+     *
+     */
+    private boolean httpAuthEnable = false;
+    private String httpAuthUser = null, httpAuthPassword = null;
 
     /**
      * If an instance of WoopraTracker already exists, this method returns it.
@@ -95,6 +102,22 @@ public class WoopraTracker {
         this.idleTimeout = idleTimeout;
     }
 
+    /**
+     *
+     * @param user
+     * @param password
+     */
+    public void enableBasicAuth(String user, String password) {
+        this.httpAuthEnable = true;
+        this.httpAuthUser = user;
+        this.httpAuthPassword = password;
+    }
+
+    /**
+     *
+     * @param event
+     * @param visitor
+     */
     private void woopraHttpRequest(WoopraEvent event, WoopraVisitor visitor) {
         try {
             String baseUrl = "http://www.woopra.com/track/";
@@ -130,6 +153,10 @@ public class WoopraTracker {
 
             HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
             conn.setRequestMethod("GET");
+
+            if (this.httpAuthEnable) {
+                conn.setRequestProperty("Authorization", "Basic " + Base64.getEncoder().encodeToString((this.httpAuthUser + ":" + this.httpAuthPassword).getBytes()));
+            }
 
             conn.setConnectTimeout(4000);
             conn.setReadTimeout(6000);
