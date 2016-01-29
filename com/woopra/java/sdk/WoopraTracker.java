@@ -140,7 +140,7 @@ public class WoopraTracker {
                 url = baseUrl.concat("identify/").concat(configParams).concat(userParams).concat("&ce_app=").concat(WoopraTracker.SDK_ID);
             } else {
                 String eventParams = "";
-                eventParams = eventParams.concat("&ce_name=").concat(URLEncoder.encode(event.name, "UTF-8"));
+                eventParams = eventParams.concat("&event=").concat(URLEncoder.encode(event.name, "UTF-8"));
                 @SuppressWarnings("unchecked")
                 Iterator<String> eventKeys = event.properties.keys();
                 while (eventKeys.hasNext()) {
