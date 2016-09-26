@@ -1,6 +1,5 @@
 package com.woopra.java.sdk;
 
-import com.woopra.json.JSONException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -11,6 +10,7 @@ import java.util.Base64;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import org.json.JSONException;
 
 /**
  * Woopra Java SDK This class enables back-end tracking in Java for Woopra. Even
@@ -30,12 +30,12 @@ public class WoopraTracker {
      *
      */
     private final String domain;
-    private int idleTimeout;
 
     /**
      *
      */
-    private boolean httpAuthEnable = false;
+    private int idleTimeout;
+    private boolean httpsEnable = false, httpAuthEnable = false;
     private String httpAuthUser = null, httpAuthPassword = null;
 
     /**
@@ -63,7 +63,7 @@ public class WoopraTracker {
      */
     public WoopraTracker(String domain) {
         this.domain = domain;
-        this.idleTimeout = WoopraTracker.defaultTimeout;
+        this.idleTimeout = defaultTimeout;
     }
 
     /**
@@ -74,7 +74,17 @@ public class WoopraTracker {
      */
     public void track(WoopraVisitor visitor, WoopraEvent event) {
         if (visitor != null && event != null) {
-            this.woopraHttpRequest(event, visitor);
+            this.httpRequest(event, visitor);
+        }
+    }
+
+    /**
+     *
+     * @param visitor
+     */
+    public void identify(WoopraVisitor visitor) {
+        if (visitor != null) {
+            this.httpRequest(null, visitor);
         }
     }
 
@@ -86,10 +96,29 @@ public class WoopraTracker {
      *
      * @param visitor
      */
+    @Deprecated
     public void push(WoopraVisitor visitor) {
         if (visitor != null) {
-            this.woopraHttpRequest(null, visitor);
+            this.httpRequest(null, visitor);
         }
+    }
+
+    /**
+     *
+     * @param httpsEnable
+     */
+    public void setSecureTracking(boolean httpsEnable) {
+        this.httpsEnable = httpsEnable;
+    }
+
+    /**
+     *
+     * @param httpsEnable
+     * @return
+     */
+    public WoopraTracker withSecureTracking(boolean httpsEnable) {
+        this.httpsEnable = httpsEnable;
+        return this;
     }
 
     /**
@@ -100,6 +129,18 @@ public class WoopraTracker {
      */
     public void setIdleTimeout(int idleTimeout) {
         this.idleTimeout = idleTimeout;
+    }
+
+    /**
+     * Set the value of the idle timeout (time in milliseconds after which the
+     * user is considered offline)
+     *
+     * @param idleTimeout
+     * @return
+     */
+    public WoopraTracker withIdleTimeout(int idleTimeout) {
+        this.idleTimeout = idleTimeout;
+        return this;
     }
 
     /**
@@ -114,13 +155,27 @@ public class WoopraTracker {
     }
 
     /**
+     * Enables http basic auth
+     *
+     * @param user
+     * @param password
+     * @return
+     */
+    public WoopraTracker withBasicAuth(String user, String password) {
+        this.httpAuthEnable = true;
+        this.httpAuthUser = user;
+        this.httpAuthPassword = password;
+        return this;
+    }
+
+    /**
      *
      * @param event
      * @param visitor
      */
-    private void woopraHttpRequest(WoopraEvent event, WoopraVisitor visitor) {
+    private void httpRequest(WoopraEvent event, WoopraVisitor visitor) {
         try {
-            String baseUrl = "http://www.woopra.com/track/";
+            String baseUrl = ((this.httpsEnable) ? "https" : "http") + "://www.woopra.com/track/";
             String configParams = "?host=".concat(URLEncoder.encode((String) this.domain, "UTF-8"));
             configParams = configParams.concat("&cookie=").concat(URLEncoder.encode(visitor.getCookieValue(), "UTF-8"));
             if (!visitor.getIpAddress().equals("")) {
@@ -132,7 +187,6 @@ public class WoopraTracker {
             while (userKeys.hasNext()) {
                 String key = userKeys.next();
                 String value = visitor.properties.get(key).toString();
-                System.out.println(key.concat(" : ").concat(value));
                 userParams = userParams.concat("&cv_").concat(URLEncoder.encode(key, "UTF-8")).concat("=").concat(URLEncoder.encode(value, "UTF-8"));
             }
             String url;

@@ -1,6 +1,6 @@
 package com.woopra.java.sdk;
 
-import com.woopra.json.JSONObject;
+import org.json.JSONObject;
 
 /**
  * A custom event class for Woopra
