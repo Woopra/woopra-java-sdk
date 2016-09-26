@@ -13,7 +13,15 @@ woopra = new WoopraTracker("mybusiness.com").withIdleTimeout(15000);
 ```
 
 You can configure secure tracking (over https)
+``` java
 woopra = new WoopraTracker("mybusiness.com").withSecureTracking(true);
+```
+
+You can configure http basic auth (You will need to configure basic auth tracking in your Woopra account first):
+``` java
+woopra = new WoopraTracker("mybusiness.com").withBasicAuth("User..", "Pass...");
+```
+
 
 
 To track an event, you should first create an instance of WoopraEvent...
