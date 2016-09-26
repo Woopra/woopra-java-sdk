@@ -56,6 +56,17 @@ public class WoopraEvent {
     }
 
     /**
+     *
+     * @param key
+     * @param value
+     * @return
+     */
+    public WoopraEvent withProperty(String key, Object value) {
+        this.properties.put(key, value);
+        return this;
+    }
+
+    /**
      * Return the event properties as a JSONObject
      *
      * @return

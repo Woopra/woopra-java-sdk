@@ -26,12 +26,27 @@ public class WoopraVisitor {
         this.ipAddress = ipAddress;
     }
 
+    public WoopraVisitor withIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
+        return this;
+    }
+
     public void setUserAgent(String userAgent) {
         this.userAgent = userAgent;
     }
 
+    public WoopraVisitor withUserAgent(String userAgent) {
+        this.userAgent = userAgent;
+        return this;
+    }
+
     public void setProperty(String key, Object value) {
         this.properties.put(key, value);
+    }
+
+    public WoopraVisitor withProperty(String key, Object value) {
+        this.properties.put(key, value);
+        return this;
     }
 
     @Override
