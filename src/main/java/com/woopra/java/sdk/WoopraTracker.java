@@ -182,6 +182,9 @@ public class WoopraTracker {
                 configParams = configParams.concat("&ip=").concat(URLEncoder.encode(visitor.getIpAddress(), "UTF-8"));
             }
             configParams = configParams.concat("&timeout=").concat(URLEncoder.encode(String.valueOf(this.idleTimeout), "UTF-8"));
+            if (event.timestamp != -1) {
+                configParams = configParams.concat("&timestamp=").concat(URLEncoder.encode(String.valueOf(event.timestamp), "UTF-8"));
+            }
             String userParams = "";
             Iterator<String> userKeys = visitor.properties.keySet().iterator();
             while (userKeys.hasNext()) {

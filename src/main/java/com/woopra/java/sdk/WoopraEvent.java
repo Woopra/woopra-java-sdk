@@ -21,6 +21,13 @@ public class WoopraEvent {
     public JSONObject properties = new JSONObject();
 
     /**
+     * The unix ms time at which the event occurred
+     * If left blank, the event timestamp will be the time at which
+     * the tracking server processes the request
+     */
+    public long timestamp = -1;
+
+    /**
      * Public Constructor
      *
      * @param eventName
@@ -63,6 +70,16 @@ public class WoopraEvent {
      */
     public WoopraEvent withProperty(String key, Object value) {
         this.properties.put(key, value);
+        return this;
+    }
+
+    /**
+     *
+     * @param timestamp
+     * @return
+     */
+    public WoopraEvent withTimestamp(long timestamp) {
+        this.timestamp = timestamp;
         return this;
     }
 
