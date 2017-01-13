@@ -91,6 +91,6 @@ public class WoopraEvent {
      */
     @Override
     public String toString() {
-        return this.properties.toString();
+        return this.name.concat(": ").concat(this.properties.toString());
     }
 }
