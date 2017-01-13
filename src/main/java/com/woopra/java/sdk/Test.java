@@ -5,29 +5,56 @@ package com.woopra.java.sdk;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author rsamuel
  */
 public class Test {
+
     public static void main(String[] args) {
         Test t = new Test();
-        t.runEventTest();
-        
+        t.testConfigOptions();
+        t.testEventProps();
+        t.testIdentify();
+
     }
-    
-    private void runEventTest() {
-        WoopraTracker tracker =  WoopraTracker.getInstance("ralphsamuel.io");
-      
-        WoopraEvent event = new WoopraEvent("java_sdk_test");
-        WoopraVisitor visitor = new WoopraVisitor("email", "ralph.java.sdk@woopratest.com");
-        
-        event.withTimestamp(1484334934086L)
-                .withProperty("test_prop_1", "test_prop_value");
-        
-        
-        tracker.track(visitor, event);
+
+    private void testConfigOptions() {
+        WoopraTracker tracker = WoopraTracker.getInstance("ralphsamuel.io")
+                .withIdleTimeout(500);
+
+        WoopraVisitor visitor = new WoopraVisitor("email", this.generateUseremail());
+
+        WoopraEvent event = new WoopraEvent("java_sdk_test")
+                .withTimestamp(1484334934086L); //friday jan 13 2017 about 11:30 am PST
+
         System.out.println("Tracking Event: ".concat(event.toString()));
+        tracker.track(visitor, event);
+    }
+
+    private void testEventProps() {
+        WoopraTracker tracker = WoopraTracker.getInstance("ralphsamuel.io");
+
+        WoopraEvent event = new WoopraEvent("java_sdk_test_with_props");
+        WoopraVisitor visitor = new WoopraVisitor("email", this.generateUseremail());
+
+        event.withProperty("test_event_prop_1", "test_event_prop_value_1");
+
+        System.out.println("Tracking Event: ".concat(event.toString()));
+        tracker.track(visitor, event);
+    }
+
+    private void testIdentify() {
+        WoopraTracker tracker = WoopraTracker.getInstance("ralphsamuel.io");
+
+        WoopraVisitor visitor = new WoopraVisitor("email", this.generateUseremail())
+                .withProperty("test_vis_prop_1", "test_vis_prop_val_".concat(String.valueOf((int) (100 * Math.random()))));
+
+        System.out.println("Sending Identify(): ".concat(visitor.toString()));
+        tracker.identify(visitor);
+    }
+
+    private String generateUseremail() {
+        return "ralph".concat(String.valueOf((int) (10 * Math.random()))).concat(".java.sdk@woopratest.com");
     }
 }
