@@ -11,6 +11,8 @@ package com.woopra.java.sdk;
  */
 public class Test {
 
+    private String testProject = "ralphsamuel.io";
+
     public static void main(String[] args) {
         Test t = new Test();
         t.testConfigOptions();
@@ -20,7 +22,7 @@ public class Test {
     }
 
     private void testConfigOptions() {
-        WoopraTracker tracker = WoopraTracker.getInstance("ralphsamuel.io")
+        WoopraTracker tracker = WoopraTracker.getInstance(this.testProject)
                 .withIdleTimeout(500);
 
         WoopraVisitor visitor = new WoopraVisitor("email", this.generateUseremail());
@@ -33,7 +35,7 @@ public class Test {
     }
 
     private void testEventProps() {
-        WoopraTracker tracker = WoopraTracker.getInstance("ralphsamuel.io");
+        WoopraTracker tracker = WoopraTracker.getInstance(this.testProject);
 
         WoopraEvent event = new WoopraEvent("java_sdk_test_with_props");
         WoopraVisitor visitor = new WoopraVisitor("email", this.generateUseremail());
@@ -45,7 +47,7 @@ public class Test {
     }
 
     private void testIdentify() {
-        WoopraTracker tracker = WoopraTracker.getInstance("ralphsamuel.io");
+        WoopraTracker tracker = WoopraTracker.getInstance(this.testProject);
 
         WoopraVisitor visitor = new WoopraVisitor("email", this.generateUseremail())
                 .withProperty("test_vis_prop_1", "test_vis_prop_val_".concat(String.valueOf((int) (100 * Math.random()))));
