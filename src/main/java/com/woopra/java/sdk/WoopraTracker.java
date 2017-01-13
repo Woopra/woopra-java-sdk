@@ -203,7 +203,13 @@ public class WoopraTracker {
                 while (eventKeys.hasNext()) {
                     String key = eventKeys.next();
                     String value = event.properties.get(key).toString();
-                    eventParams = eventParams.concat("&ce_").concat(URLEncoder.encode(key, "UTF-8")).concat("=").concat(URLEncoder.encode(value, "UTF-8"));
+                    // Special parameter - should not be prefixed with "ce_". Allows to log events "in the past".
+                    if (key.equals("timestamp")) {
+                        eventParams = eventParams.concat("&");
+                    } else {
+                        eventParams = eventParams.concat("&ce_");
+                    }
+                    eventParams = eventParams.concat(URLEncoder.encode(key, "UTF-8")).concat("=").concat(URLEncoder.encode(value, "UTF-8"));
                 }
                 url = baseUrl.concat("ce/").concat(configParams).concat(userParams).concat(eventParams).concat("&ce_app=").concat(WoopraTracker.SDK_ID);
             }
