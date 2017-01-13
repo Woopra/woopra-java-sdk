@@ -66,6 +66,10 @@ public class WoopraTracker {
         this.idleTimeout = defaultTimeout;
     }
 
+    WoopraTracker() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     /**
      * Tracks a custom event through the back-end.
      *
@@ -175,46 +179,58 @@ public class WoopraTracker {
      */
     private void httpRequest(WoopraEvent event, WoopraVisitor visitor) {
         try {
-            String baseUrl = ((this.httpsEnable) ? "https" : "http") + "://www.woopra.com/track/";
-            String configParams = "?host=".concat(URLEncoder.encode((String) this.domain, "UTF-8"));
-            configParams = configParams.concat("&cookie=").concat(URLEncoder.encode(visitor.getCookieValue(), "UTF-8"));
+            StringBuilder url = new StringBuilder();
+            url.append(((this.httpsEnable) ? "https" : "http") + "://www.woopra.com/track/");
+
+            //Identify or Track
+            if (event == null) {
+                url.append("identify/");
+            } else {
+                url.append("ce/");
+            }
+
+            //Request Options
+            url.append("?host=").append(URLEncoder.encode(this.domain, "UTF-8"));
+            url.append("&app=").append(WoopraTracker.SDK_ID);
+            url.append("&cookie=").append(URLEncoder.encode(visitor.getCookieValue(), "UTF-8"));
+            url.append("&timeout=").append(this.idleTimeout);
             if (!visitor.getIpAddress().equals("")) {
-                configParams = configParams.concat("&ip=").concat(URLEncoder.encode(visitor.getIpAddress(), "UTF-8"));
+                url.append("&ip=").append(URLEncoder.encode(visitor.getIpAddress(), "UTF-8"));
             }
-            configParams = configParams.concat("&timeout=").concat(URLEncoder.encode(String.valueOf(this.idleTimeout), "UTF-8"));
-            if (event.timestamp != -1) {
-                configParams = configParams.concat("&timestamp=").concat(URLEncoder.encode(String.valueOf(event.timestamp), "UTF-8"));
+            if (event != null && event.timestamp > 0) {
+                url.append("&timestamp=").append(event.timestamp);
             }
-            String userParams = "";
+
+            //visitor Props
             Iterator<String> userKeys = visitor.properties.keySet().iterator();
             while (userKeys.hasNext()) {
                 String key = userKeys.next();
                 String value = visitor.properties.get(key).toString();
-                userParams = userParams.concat("&cv_").concat(URLEncoder.encode(key, "UTF-8")).concat("=").concat(URLEncoder.encode(value, "UTF-8"));
+
+                url.append("&cv_").append(URLEncoder.encode(key, "UTF-8")).append("=").append(URLEncoder.encode(value, "UTF-8"));
             }
-            String url;
-            if (event == null) {
-                url = baseUrl.concat("identify/").concat(configParams).concat(userParams).concat("&ce_app=").concat(WoopraTracker.SDK_ID);
-            } else {
-                String eventParams = "";
-                eventParams = eventParams.concat("&event=").concat(URLEncoder.encode(event.name, "UTF-8"));
+
+            //event Props
+            if (event != null) {
+                url.append("&event=").append(URLEncoder.encode(event.name, "UTF-8"));
                 @SuppressWarnings("unchecked")
+
                 Iterator<String> eventKeys = event.properties.keys();
                 while (eventKeys.hasNext()) {
                     String key = eventKeys.next();
                     String value = event.properties.get(key).toString();
-                    eventParams = eventParams.concat("&ce_").concat(URLEncoder.encode(key, "UTF-8")).concat("=").concat(URLEncoder.encode(value, "UTF-8"));
+                    url.append("&ce_").append(URLEncoder.encode(key, "UTF-8")).append("=").append(URLEncoder.encode(value, "UTF-8"));
                 }
-                url = baseUrl.concat("ce/").concat(configParams).concat(userParams).concat(eventParams).concat("&ce_app=").concat(WoopraTracker.SDK_ID);
             }
 
-            HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+            //Make Request
+//            System.err.println("Sending Request: ".concat(url.toString()));
+            HttpURLConnection conn = (HttpURLConnection) new URL(url.toString()).openConnection();
             conn.setRequestMethod("GET");
 
             if (this.httpAuthEnable) {
                 conn.setRequestProperty("Authorization", "Basic " + Base64.getEncoder().encodeToString((this.httpAuthUser + ":" + this.httpAuthPassword).getBytes()));
             }
-
             conn.setConnectTimeout(4000);
             conn.setReadTimeout(6000);
 
