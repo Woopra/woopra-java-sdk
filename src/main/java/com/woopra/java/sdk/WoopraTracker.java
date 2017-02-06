@@ -205,9 +205,11 @@ public class WoopraTracker {
             Iterator<String> userKeys = visitor.properties.keySet().iterator();
             while (userKeys.hasNext()) {
                 String key = userKeys.next();
-                String value = visitor.properties.get(key).toString();
 
-                url.append("&cv_").append(URLEncoder.encode(key, "UTF-8")).append("=").append(URLEncoder.encode(value, "UTF-8"));
+                Object value = visitor.properties.get(key);
+                if (value != null) {
+                    url.append("&cv_").append(URLEncoder.encode(key, "UTF-8")).append("=").append(URLEncoder.encode(value.toString(), "UTF-8"));
+                }
             }
 
             //event Props
@@ -218,8 +220,11 @@ public class WoopraTracker {
                 Iterator<String> eventKeys = event.properties.keys();
                 while (eventKeys.hasNext()) {
                     String key = eventKeys.next();
-                    String value = event.properties.get(key).toString();
-                    url.append("&ce_").append(URLEncoder.encode(key, "UTF-8")).append("=").append(URLEncoder.encode(value, "UTF-8"));
+
+                    Object value = event.properties.get(key);
+                    if (value != null) {
+                        url.append("&ce_").append(URLEncoder.encode(key, "UTF-8")).append("=").append(URLEncoder.encode(value.toString(), "UTF-8"));
+                    }
                 }
             }
 
