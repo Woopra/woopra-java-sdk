@@ -11,7 +11,7 @@ package com.woopra.java.sdk;
  */
 public class Test {
 
-    private String testProject = "ralphsamuel.io";
+    private String testProject = "test.woopra.com";
 
     public static void main(String[] args) {
         Test t = new Test();
